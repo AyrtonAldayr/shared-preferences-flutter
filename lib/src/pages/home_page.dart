@@ -7,19 +7,22 @@ class HomePage extends StatelessWidget {
   final preferen = new PreferenciasUsuario();
   @override
   Widget build(BuildContext context) {
+    preferen.setUltimaPagina = HomePage.routeName;
     return Scaffold(
       appBar: AppBar(
         title: Text('Preferencias de Usuario'),
+        backgroundColor:
+            (preferen.getColorSecundario) ? Colors.greenAccent : Colors.blue,
       ),
       drawer: MenuDrawer(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Color Secundario'),
+          Text('Color Secundario : ${preferen.getColorSecundario}'),
           Divider(),
           Text('Genero: ${preferen.getGenero}'),
           Divider(),
-          Text('Nombre usuario'),
+          Text('Nombre usuario: ${preferen.getNombreUsuario}'),
           Divider(),
         ],
       ),

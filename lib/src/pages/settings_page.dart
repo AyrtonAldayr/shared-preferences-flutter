@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:preferencias_usuario_app/src/share_prefs/preferencias_usuario.dart';
 import 'package:preferencias_usuario_app/src/widgets/menu_drawer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
   static final String routeName = 'settings';
@@ -10,16 +10,21 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool _colorSecundario = false;
-  int? _genero = 1;
-  String _nombre = 'Usuario';
+  // bool? _colorSecundario;
+  int? _genero;
+  // String _nombre = 'Usuario';
 
   late TextEditingController _textEditingController;
+  final preferen = new PreferenciasUsuario();
 
   @override
   void initState() {
     super.initState();
-    _textEditingController = new TextEditingController(text: _nombre);
+    preferen.setUltimaPagina = SettingsPage.routeName;
+    _genero = preferen.getGenero;
+    // _colorSecundario = preferen.getColorSecundario;
+    _textEditingController =
+        new TextEditingController(text: preferen.getNombreUsuario);
   }
 
   @override
@@ -27,6 +32,8 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Ajustes'),
+        backgroundColor:
+            (preferen.getColorSecundario) ? Colors.greenAccent : Colors.blue,
       ),
       drawer: MenuDrawer(),
       body: ListView(
@@ -43,11 +50,11 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           Divider(),
           SwitchListTile(
-            value: _colorSecundario,
+            value: preferen.getColorSecundario,
             title: Text('Color secundario:'),
             onChanged: (bool value) {
               setState(() {
-                _colorSecundario = value;
+                preferen.setColorSecundario = value;
               });
             },
           ),
@@ -70,7 +77,9 @@ class _SettingsPageState extends State<SettingsPage> {
               controller: _textEditingController,
               decoration: InputDecoration(
                   labelText: 'Nombre', helperText: 'Nombre de la persona'),
-              onChanged: (String value) {},
+              onChanged: (String value) {
+                preferen.setNombreUsuario = value;
+              },
             ),
           ),
         ],
@@ -78,11 +87,10 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  _setSelectedRadio(int? valor) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('genero', valor!);
+  _setSelectedRadio(int? valor) {
     setState(() {
       print('valor : $valor');
+      preferen.setGenero = valor!;
       _genero = valor;
     });
   }

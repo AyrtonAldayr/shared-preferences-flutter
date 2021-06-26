@@ -1,3 +1,4 @@
+import 'package:preferencias_usuario_app/src/pages/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenciasUsuario {
@@ -16,16 +17,39 @@ class PreferenciasUsuario {
     this._prefs = await SharedPreferences.getInstance();
   }
 
-  // bool? _colorSecudanrio;
-  // int? _genero;
-  // String? _nombre;
-
   //Getter y Setter del genero
-  get getGenero {
+  int get getGenero {
     return this._prefs?.getInt('genero') ?? 1;
   }
 
   set setGenero(int value) {
     this._prefs?.setInt('genero', value);
+  }
+
+  //Getter y Setter del ColorSecundario
+  bool get getColorSecundario {
+    return this._prefs?.getBool('colorSecundario') ?? true;
+  }
+
+  set setColorSecundario(bool value) {
+    this._prefs?.setBool('colorSecundario', value);
+  }
+
+  //Getter y Setter del Nombre del Usuario
+  String get getNombreUsuario {
+    return this._prefs?.getString('nombreUsuario') ?? '';
+  }
+
+  set setNombreUsuario(String value) {
+    this._prefs?.setString('nombreUsuario', value);
+  }
+
+  //Getter y Setter de la ultima pagina
+  String get getUltimaPagina {
+    return this._prefs?.getString('ultimaPagina') ?? HomePage.routeName;
+  }
+
+  set setUltimaPagina(String value) {
+    this._prefs?.setString('ultimaPagina', value);
   }
 }
